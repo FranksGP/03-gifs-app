@@ -4,17 +4,20 @@ import { CustomHeader } from './shared/components/CustomHeader'
 import { SearchBar } from './shared/components/SearchBar'
 import { PreviousSearches } from './gifs/components/PreviousSearches'
 import { GifList } from './gifs/components/GifList'
-import { mockGifs } from './mock-data/gifs.mock'
+import { getGifsByQuery } from './gifs/actions/get-gifs-by-qyety.action'
+import type { Gif } from './gifs/interface/gif.interface'
 
 
 export const GifsApp = () => {
-  const [previusTerms, setPreviusTerms] = useState(['dragon ball z']) // constante, funcion para actualiza, estado inicial.
+
+  const [gifs, setGifs] = useState<Gif[]>([])
+  const [previusTerms, setPreviusTerms] = useState<string[]>([]) // constante, funcion para actualiza, estado inicial.
 
   const handleTermClicked = (term: string) => {
     console.log({ term });
   };
 
-  const handleSearch = (query: string = '') =>{
+  const handleSearch = async(query: string = '') =>{
 
     query = query.trim().toLowerCase();
 
@@ -25,6 +28,9 @@ export const GifsApp = () => {
 
     setPreviusTerms([query, ...previusTerms].splice(0,8))
 
+    const gifs = await getGifsByQuery(query);
+  
+    setGifs(gifs);
   };
 
   return (
@@ -42,7 +48,7 @@ export const GifsApp = () => {
     onLabelClicked={handleTermClicked}/>
     
     {/* Gifs */}
-    <GifList gifs={mockGifs}/>
+    <GifList gifs={gifs}/>
 
     </>
   )

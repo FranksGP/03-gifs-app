@@ -14,7 +14,7 @@ export const SearchBar = ({ placeholder = 'Buscar', onQuery}: Props) => {
     
     const timeoutId = setTimeout(() => {
       onQuery(query);
-    }, 700);
+    }, 5000);
 
     return() => {
       clearTimeout(timeoutId);
